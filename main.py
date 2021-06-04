@@ -40,7 +40,6 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS student_list(
                 ON DELETE CASCADE
         )""")
 dbase.commit()
-sys.path.append(".")
 
 #Declares images to be used
 pic = PhotoImage(file="image.png")
