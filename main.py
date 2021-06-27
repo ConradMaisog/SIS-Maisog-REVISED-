@@ -37,6 +37,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS student_list(
         student_gender text,
         FOREIGN KEY (course_number)
             REFERENCES course_list(course_number)
+                ON UPDATE CASCADE
                 ON DELETE CASCADE
         )""")
 dbase.commit()
@@ -52,6 +53,7 @@ button_save = PhotoImage(file="button_save.png")
 button_courses = PhotoImage(file="button_courses.png")
 button_students = PhotoImage(file="button_students.png")
 button_addcourse = PhotoImage(file="button_add-course.png")
+button_addstudent = PhotoImage(file="button_add-student.png")
 button_viewstudents = PhotoImage(file="button_view-students.png")
 button_update1 = PhotoImage(file="button_update1.png")
 button_delete1 = PhotoImage(file="button_delete1.png")
@@ -102,8 +104,8 @@ def course_window(comm,course):
     def command():
         #Checks if an existing record already exist
         if comm == "add":
-            for course in courseList:
-                if course[1] == code.get('1.0',"end-1c") or course[2] == cname.get('1.0',"end-1c"):
+            for thiscourse in courseList:
+                if thiscourse[1] == code.get('1.0',"end-1c") or thiscourse[2] == cname.get('1.0',"end-1c"):
                     messagebox.showinfo("Student Information System","Record already exists.",parent=cWindow)
                     return
         #Guarantees that the input fields are not empty
@@ -157,6 +159,7 @@ def show_course(*args):
     
     this.config(text="AVAILABLE COURSES")
     addButton.config(text="Add Course", command=lambda:course_window("add",[]))
+    addButton.config(image=button_addcourse)
     
     row,column=0,0
     #Loops through the list of courses
@@ -181,7 +184,7 @@ def show_course(*args):
             deleteButton.image=button_delete1
             deleteButton.grid(row=3,column=1,padx=(3,0),pady=1)
             column += 1
-    fixFrame = Frame(listFrame, height=280, width=470, bg="white")
+    fixFrame = Frame(listFrame, height=2000, width=470, bg="white")
     fixFrame.grid(row=row+1,column=0,columnspan=3)
     fixFrame.grid_propagate(0)
 
@@ -325,6 +328,7 @@ def show_student(*args):
             courseTitle=course[2]
     this.config(text="STUDENT LIST | ALL COURSES" if strainer=="" else "STUDENT LIST | " + courseTitle)
     addButton.config(text="Add Student", command=lambda:student_window("add",[],strainer))
+    addButton.config(image=button_addstudent)
 
     #Filters the student list according to course
     if strainer != "":
